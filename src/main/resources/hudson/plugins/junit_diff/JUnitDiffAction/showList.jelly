@@ -1,0 +1,26 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler"
+	xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson"
+	xmlns:f="/lib/form" xmlns:i="jelly:fmt">
+	<j:set var="rootURL" value="${request.contextPath}" />
+	<l:layout title="${it.project.displayName} #${it.number}">
+		<!--  st:include page="sidepanel.jelly" from="${it.owner}" / -->
+		<st:include page="sidepanel.jelly" />
+		<l:main-panel>
+			<h1>JUnit Diff</h1>
+			<span style="color:red"><b>${it.errorMsg}</b></span> 
+			<j:set var="diffMap" value="${request.session.getAttribute(it.PATH_MAP)}"/>
+			<j:set var="urlMap" value="${request.session.getAttribute(it.URL_MAP)}"/>
+			<h3>JUnit Diff list in your session</h3>
+			<ul>
+			<j:if test="${diffMap!=null and diffMap.size()!=0}">
+				<j:forEach var="b" items="${diffMap.keySet()}">
+					<li><a href="${rootURL}/${urlMap.get(b)}">${b}</a> (path to results: ${diffMap.get(b)})</li>
+				</j:forEach>
+			</j:if>
+			<j:if test="${diffMap==null or diffMap.size()==0}">
+				<span style="color:red"><b>You have not selected any builds yet!</b></span>
+			</j:if>
+			</ul>
+		</l:main-panel>
+	</l:layout>
+</j:jelly>

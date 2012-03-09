@@ -1,0 +1,21 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:i="jelly:fmt">
+<j:set var="buildUrl" value="${h.decompose(request)}" />
+<l:side-panel>
+    <l:tasks>
+    	<l:task icon="plugin/junit-diff/img/list-add.png" href="${buildUrl.baseUrl}/junit-diff/addBuild" title="${%Add Build to JUnit Diff list}" />
+    	<j:if test="${it.isMatrixBuild()}">
+        	<l:task icon="plugin/junit-diff/img/list-add-add.png" href="${buildUrl.baseUrl}/junit-diff/addBuildMatrix" title="${%Add All Matrix Combinations}" />
+      	</j:if>
+    	<l:task icon="plugin/junit-diff/img/list-remove.png" href="${buildUrl.baseUrl}/junit-diff/removeBuild" title="${%Remove Build from JUnit Diff list}" />
+    	<l:task icon="plugin/junit-diff/img/format-justify-fill.png" href="${buildUrl.baseUrl}/junit-diff/showList" title="${%Show JUnit Diff list}" />
+    	<l:task icon="plugin/junit-diff/img/mail-send-receive.png" href="${buildUrl.baseUrl}/junit-diff/junitDiff" title="${%Show JUnit Diff}" />
+    	<l:task icon="plugin/junit-diff/img/document-save.png" href="${buildUrl.baseUrl}/junit-diff/download" title="${%Download Diff}" />
+    	<j:if test="${it.build.previousBuild!=null}">
+        	<l:task icon="images/24x24/previous.gif" href="${buildUrl.previousBuildUrl}" title="${%Previous Build}" />
+      	</j:if>
+      	<j:if test="${it.build.nextBuild!=null}">
+        	<l:task icon="images/24x24/next.gif" href="${buildUrl.nextBuildUrl}" title="${%Next Build}" />
+      </j:if>
+    </l:tasks>
+</l:side-panel>
+</j:jelly>

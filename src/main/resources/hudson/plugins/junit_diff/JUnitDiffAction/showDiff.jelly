@@ -1,0 +1,13 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler"
+	xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson"
+	xmlns:f="/lib/form" xmlns:i="jelly:fmt">
+	<l:layout title="${it.project.displayName} #${it.number}">
+		<!--  st:include page="sidepanel.jelly" from="${it.owner}" / -->
+		<st:include page="sidepanel.jelly" />
+		<l:main-panel>
+			<h3>JUnit Diff</h3>
+			<span style="color:red"><b>${it.errorMsg}</b></span> 
+			${it.readJunitDiffResult(request.session.getAttribute(it.RES_FILE_PATH))}
+		</l:main-panel>
+	</l:layout>
+</j:jelly>

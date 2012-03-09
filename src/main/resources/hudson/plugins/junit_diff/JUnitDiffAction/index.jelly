@@ -1,0 +1,16 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:i="jelly:fmt">
+<l:layout title="${it.project.displayName} #${it.number}">
+    <!--  st:include page="sidepanel.jelly" from="${it.owner}" / --> 
+    <st:include page="sidepanel.jelly"/>
+    <l:main-panel>
+    	<h1>JUnit Diff</h1>
+    	<p>
+		<b>... everything you ever wanted to know about your JUnit tests results</b><br/>
+		please add at least two build (run with JUnitDiff turned on in the job config)
+		</p>
+		<p>
+		<span style="color:red"><b>${it.errorMsg}</b></span>
+		</p> 
+	</l:main-panel>
+  </l:layout>
+</j:jelly>
