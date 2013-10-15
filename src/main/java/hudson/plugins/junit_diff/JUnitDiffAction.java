@@ -7,6 +7,7 @@ import hudson.model.Action;
 import hudson.model.AbstractBuild;
 import hudson.model.Hudson;
 import hudson.model.Job;
+import hudson.model.Run;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -68,7 +69,9 @@ public class JUnitDiffAction implements Action {
 		int buildNumber = build.getNumber(); // number of current build
 		for (Job comb : mProj.getAllJobs()) {
 			System.out.println("combination: " + comb.getDisplayName());
-			JUnitDiffAction action = comb.getBuildByNumber(buildNumber).getAction(JUnitDiffAction.class);
+			Run<?, ?> run = comb.getBuildByNumber(buildNumber);
+			if (run == null) continue; // Combination was not run in this build
+			JUnitDiffAction action = run.getAction(JUnitDiffAction.class);
 			if (action != null) {
 				action.addBuild(diffMap, urlMap);
 			}
@@ -109,7 +112,7 @@ public class JUnitDiffAction implements Action {
 		// rsp.forward(this, "showDiff", req);
 		rsp.sendRedirect2("showDiff");
 	}
-	
+
 	public void doDownload(StaplerRequest req, StaplerResponse rsp) throws IOException, InterruptedException,ServletException{
 		errorMsg = "";
 		String file = (String)req.getSession().getAttribute(RES_FILE_PATH);
@@ -153,7 +156,7 @@ public class JUnitDiffAction implements Action {
 	}
 
 	public boolean isMatrixBuild() {
-		return ((Object) build instanceof MatrixRun);
+		return (build instanceof MatrixRun);
 	}
 
 	private void addBuild(Map<String, String> diffMap, Map<String, String> urlMap) {
