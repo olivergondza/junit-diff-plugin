@@ -47,7 +47,6 @@ public class JUnitDiff extends Recorder {
 	@Override
 	public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener)
 			throws InterruptedException, IOException {
-		System.out.println("JUnit diff...");
 		DescribableList<Publisher,Descriptor<Publisher>> pubList = build.getParent().getPublishersList();
 		for(Publisher pub:pubList){
 			if(pub instanceof JUnitResultArchiver){
@@ -98,7 +97,6 @@ public class JUnitDiff extends Recorder {
 		
 		@Override
 		public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {
-			System.out.println("config volan: " + this.getClass().getName());
 			junitDiffPath = formData.getString("junitDiffPath");
 			//TODO udelat nejaky check, ze je zapnute publikovani JUnitu
 			save();

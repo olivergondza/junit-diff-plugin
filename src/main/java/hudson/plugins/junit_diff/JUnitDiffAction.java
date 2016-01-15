@@ -68,7 +68,6 @@ public class JUnitDiffAction implements Action {
 		MatrixProject mProj = (MatrixProject) build.getParent().getParent();
 		int buildNumber = build.getNumber(); // number of current build
 		for (Job comb : mProj.getAllJobs()) {
-			System.out.println("combination: " + comb.getDisplayName());
 			Run<?, ?> run = comb.getBuildByNumber(buildNumber);
 			if (run == null) continue; // Combination was not run in this build
 			JUnitDiffAction action = run.getAction(JUnitDiffAction.class);
@@ -85,7 +84,6 @@ public class JUnitDiffAction implements Action {
 
 	public void doRemoveBuild(StaplerRequest req, StaplerResponse rsp) throws IOException {
 		errorMsg = "";
-		System.out.println("Odebiram build " + buildId);
 		Map<String, String> diffMap = (HashMap<String, String>) req.getSession().getAttribute(PATH_MAP);
 		Map<String, String> urlMap = (HashMap<String, String>) req.getSession().getAttribute(URL_MAP);
 		removeBuild(diffMap, urlMap);
@@ -177,32 +175,26 @@ public class JUnitDiffAction implements Action {
 	}
 
 	private String runJunitDiff(Map<String, String> diffMap) throws IOException {
-		System.out.println("Provadim JUnit diff...");
 		JUnitDiff.DescriptorImpl desc = (JUnitDiff.DescriptorImpl) Hudson.getInstance().getDescriptor(
 				JUnitDiff.class.getName());
 		String jdPath = desc.getJunitDiffPath();
 		File tmpFile = File.createTempFile("junitDiffRes_", ".html", null);
 		// tmpFile.deleteOnExit();
 		String tmpFilePath = tmpFile.getAbsolutePath();
-		System.out.println("Tmp file je: " + tmpFilePath);
-		System.out.println("Desc je: " + desc);
 		String command = "java -jar " + jdPath + " -o " + tmpFilePath;
 		for (String path : diffMap.values()) {
 			command += " " + path;
 		}
 		try {
-			System.out.println("Command is " + command);
 			Process p = Runtime.getRuntime().exec(command);
 			p.waitFor();
 
-			System.out.println("=== output begin ===");
 			BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			String line = reader.readLine();
 			while (line != null) {
 				System.out.println(line);
 				line = reader.readLine();
 			}
-			System.out.println("=== output end ===");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
